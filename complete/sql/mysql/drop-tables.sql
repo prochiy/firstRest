@@ -1,3 +1,4 @@
-DROP TABLE IF EXISTS image;
+
 DROP TABLE IF EXISTS rest_user;
+DROP TABLE IF EXISTS image;
 

@@ -4,13 +4,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.InvalidPropertiesFormatException;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.mysql.jdbc.jdbc2.optional.*;
 import giper.ImageProc;
+import giper.StatisticResponse;
 import giper.User;
 //import ru.aviacons.balance.calculation.Position;
 //import ru.aviacons.balance.calculation.Angle;
@@ -400,6 +403,57 @@ public class JDBCUtilities {
         return oldStatus;
     }
 
+    public List<StatisticResponse> getStatistic(Boolean status, long timestamp){
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet resultSet = null;
+        List listOut = null;
+        int statusInt = 0;
+        if(status == true)
+            statusInt = 1;
+
+        try{
+            conn = getConnection();
+
+            String query = null;
+            if(status == null) {
+                query = "SELECT status, imageURL, timestamp FROM rest_user " +
+                        "WHERE timestamp > " + timestamp + ";";
+            }else{
+                query = "SELECT status, imageURL, timestamp FROM rest_user " +
+                        "WHERE timestamp > " + timestamp + " AND WHERE status = " + statusInt + ";";
+            }
+            log.info(query);
+            System.out.println(query);
+            stmt = conn.createStatement();
+            stmt.executeQuery(query);
+            resultSet = stmt.getResultSet();
+            //проверяем наличие предупреждений
+            getWarningsFromResultSet(resultSet);
+            getWarningsFromStatement(stmt);
+
+            listOut = new ArrayList<StatisticResponse>(resultSet.getRow());
+            StatisticResponse statisticResponse = null;
+            System.out.println("Запрос прошел удачно");
+            while (resultSet.next()){
+                System.out.println("Запрос не пустой");
+                statisticResponse = new StatisticResponse();
+                statisticResponse.setTimestamp(resultSet.getLong("timestamp"));
+                statisticResponse.setStatus(resultSet.getInt("status") == 1);
+                statisticResponse.setImageURL(ImageProc.serverPath + resultSet.getInt("imageURL") + ".jpg");
+                listOut.add(statisticResponse);
+            }
+
+
+        }catch(SQLException e){
+            printSQLException(e);
+        }finally {
+            closeStatement(stmt);
+            closeConnection(conn);
+        }
+        return listOut;
+    }
+
 
     /**
      * Функция получает показания датчиков из базы данных для одного положения ракеты
@@ -725,47 +779,7 @@ public class JDBCUtilities {
         return output;
     }
 
-    /**
-     * Функция возвращает углы наклона из базы данных измеренные инклинометром
-     * @param id калибровки
-     * @param angle уловое пожение поворотной платформы
-     * @return массив содержажий angle_x и angle_z
-     */
-    /*public double [] getWeightsAngles(int id, Angle angle){
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet resultSet = null;
-        double[] output = new double [2];
 
-        try{
-            conn = getConnection();
-
-            String query = "SELECT angle_x, angle_z " +
-                    " FROM weighting " +
-                    "WHERE id = " + id + " AND angle = " + angle.number() + ";";
-            log.info(query);
-            stmt = conn.createStatement();
-            resultSet = stmt.executeQuery(query);
-            resultSet.next();
-            output[0] = resultSet.getDouble("angle_x");
-            output[1] = resultSet.getDouble("angle_z");
-
-            log.info("Результаты запроса" + "\n" +
-                    angle.name() + "=" + angle.number() +
-                    "angle_x = " + output[0] +
-                    "angle_y = " + output[1]);
-
-            //проверяем наличие предупреждений
-            getWarningsFromResultSet(resultSet);
-            getWarningsFromStatement(stmt);
-        }catch(SQLException e){
-            printSQLException(e);
-        }finally {
-            closeStatement(stmt);
-            closeConnection(conn);
-        }
-
-        return output;
     } */
 
 }

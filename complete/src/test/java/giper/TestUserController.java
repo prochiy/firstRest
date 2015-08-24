@@ -67,11 +67,13 @@ public class TestUserController {
         TestRestTemplate template = new TestRestTemplate();
         URL base = null;
         try {
-            base = new URL("http://localhost:" + 8080 + "/user/statistics?id=5&timestamp=1234495");
+            base = new URL("http://localhost:" + 8080 + "/user/statistics?status=false&timestamp=1234495");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        ResponseEntity<ArrayList<HashMap<String, Object>>> response = template.getForEntity(base.toString(), ArrayList<HashMap<String, Object>>.class);
+
+
+        ResponseEntity<List> response = template.getForEntity(base.toString(), List.class);
         //ResponseEntity<Integer> response = template.postForEntity(base.toString(), user, Integer.class);
 
         System.out.println(response.getBody());
