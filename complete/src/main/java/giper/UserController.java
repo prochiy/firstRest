@@ -31,25 +31,28 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @RequestMapping(value = "image", method = RequestMethod.POST)
+    public String getImageURL(@RequestBody byte[] image){
+        String url = ImageProc.write(image);
+        return url;
+    }
+
     @RequestMapping(value = "user", method = RequestMethod.POST)
-    public Integer createUser(@RequestBody User user){
+    public long createUser(@RequestBody User user){
         System.out.println("userRepository = " + userRepository);
         userRepository.save(user);
-
-        //return JDBCUtilities.getJBDCUtilities().createUser(user);
         return user.getId();
     }
 
     //@Async(value = "restLowPriority")
-    @Async
+    //@Async
     @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
-    public Future<String> getUser(@PathVariable("id") int id){
+    public User getUser(@PathVariable("id") long id){
         System.out.println("-------- id = " + id + " --------");
-        //return JDBCUtilities.getJBDCUtilities().getUser(id);
-        User user = JDBCUtilities.getJBDCUtilities().getUser(id);
+        User user = userRepository.findOne(id);
         System.out.println(user);
-        return new AsyncResult<String>("Все работает как надо");
-        //return "Все работает как надо";
+        //return new AsyncResult<String>("Все работает как надо");
+        return user;
     }
 
     @RequestMapping(value = "user/{id}", method = RequestMethod.PUT)

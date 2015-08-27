@@ -30,10 +30,15 @@ public class ImageProc {
         return image;
     }
 
-    public static void write(String name, byte[] image){
-        String fileName = path + serverPath + "newName.png";
+    public static String write(byte[] image){
 
-        File file = new File(fileName);
+        File file = null;
+        try {
+            file = File.createTempFile("imag", ".jpg", new File(path + serverPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //File file = new File(fileName);
         try(FileOutputStream fos = new FileOutputStream(file);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             DataOutputStream dos = new DataOutputStream(bos);) {
@@ -45,6 +50,7 @@ public class ImageProc {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return file.getName();
     }
 
     public static void main(String[] args){
