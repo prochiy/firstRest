@@ -1,5 +1,6 @@
 package giper;
 
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -7,7 +8,7 @@ import java.io.Serializable;
  * Created by prochiy on 8/21/15.
  */
 @Entity
-@Table(name = "person")
+@Table(name = "rest_user")
 public class User implements Serializable {
 
     public User(){}

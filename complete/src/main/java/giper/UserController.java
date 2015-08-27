@@ -1,17 +1,25 @@
 package giper;
 
 import database.JDBCUtilities;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * Created by prochiy on 8/22/15.
  */
+@EnableAsync
+@Service
 @RestController
 public class UserController {
 
@@ -20,11 +28,16 @@ public class UserController {
         return JDBCUtilities.getJBDCUtilities().createUser(user);
     }
 
+    //@Async(value = "restLowPriority")
+    @Async
     @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
-    public User getUser(@PathVariable("id") int id){
-        System.out.println("-------- id = " + id + "--------");
-        return JDBCUtilities.getJBDCUtilities().getUser(id);
-
+    public Future<String> getUser(@PathVariable("id") int id){
+        System.out.println("-------- id = " + id + " --------");
+        //return JDBCUtilities.getJBDCUtilities().getUser(id);
+        User user = JDBCUtilities.getJBDCUtilities().getUser(id);
+        System.out.println(user);
+        return new AsyncResult<String>("Все работает как надо");
+        //return "Все работает как надо";
     }
 
     @RequestMapping(value = "user/{id}", method = RequestMethod.PUT)

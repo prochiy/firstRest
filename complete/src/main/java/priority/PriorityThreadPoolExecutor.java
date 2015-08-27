@@ -2,6 +2,7 @@ package priority;
 
 import java.util.Comparator;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +13,8 @@ import java.util.concurrent.*;
  */
 public class PriorityThreadPoolExecutor extends ThreadPoolExecutor implements PriorityExecutorService
 {
+    private static Logger log = Logger.getLogger(PriorityExecutorService.class.getName());
+
     private final BlockingDeque<Runnable> workQueue;
 
     private static final RejectedExecutionHandler defaultHandler = new ThreadPoolExecutor.AbortPolicy();
@@ -40,21 +43,25 @@ public class PriorityThreadPoolExecutor extends ThreadPoolExecutor implements Pr
 
     public Future<?> submit(Runnable task)
     {
+        log.info("public Future<?> submit(Runnable task)");
         return this.submit(task, Thread.NORM_PRIORITY);
     }
 
     public <T> Future<T> submit(Runnable task, T result)
     {
+        log.info("<T> Future<T> submit(Runnable task, T result)");
         return this.submit(task, result, Thread.NORM_PRIORITY);
     }
 
     public <T> Future<T> submit(Callable<T> task)
     {
+        log.info("<T> Future<T> submit(Callable<T> task)");
         return this.submit(task, Thread.NORM_PRIORITY);
     }
 
     public Future<?> submit(Runnable task, int priority)
     {
+        log.info("Future<?> submit(Runnable task, int priority)");
         if (task == null)
             throw new NullPointerException();
         RunnableFuture<Object> ftask = newPriorityTaskFor(task, null, priority);
@@ -64,6 +71,7 @@ public class PriorityThreadPoolExecutor extends ThreadPoolExecutor implements Pr
 
     public <T> Future<T> submit(Runnable task, T result, int priority)
     {
+        log.info("<T> Future<T> submit(Runnable task, T result, int priority)");
         if (task == null)
             throw new NullPointerException();
         RunnableFuture<T> ftask = newPriorityTaskFor(task, result, priority);
@@ -73,6 +81,7 @@ public class PriorityThreadPoolExecutor extends ThreadPoolExecutor implements Pr
 
     public <T> Future<T> submit(Callable<T> task, int priority)
     {
+        log.info("<T> Future<T> submit(Callable<T> task, int priority)");
         if (task == null)
             throw new NullPointerException();
         RunnableFuture<T> ftask = newPriorityTaskFor(task, priority);

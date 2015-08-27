@@ -2,6 +2,7 @@ package priority;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,8 +13,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class PriorityExecutors
 {
+    private static Logger log = Logger.getLogger(PriorityExecutors.class.getName());
     public static PriorityExecutorService newPriorityFixedThreadPool(int nThreads)
     {
+        log.info("PriorityExecutorService newPriorityFixedThreadPool(int nThreads)");
         return new PriorityThreadPoolExecutor(nThreads, nThreads, 0L, TimeUnit.MILLISECONDS);
     }
 
