@@ -16,15 +16,18 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
+    @Column(nullable = true)
     private String name;
+    @Column(nullable = true)
     private String family;
+    @Column(nullable = true, columnDefinition = "default '0")
     private Boolean status;
+    @Column(nullable = true)
     private String imageURL;
+    @Column(nullable = true)
     private Integer age;
-
-    public int getIntImageURL(){
-        return Integer.parseInt(imageURL.substring(imageURL.lastIndexOf("/")+1, imageURL.lastIndexOf(".")));
-    }
+    @Column(nullable = false, columnDefinition = "default '-1'")
+    private long timestamp;
 
     @Override
     public String toString(){
@@ -81,5 +84,13 @@ public class User implements Serializable {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

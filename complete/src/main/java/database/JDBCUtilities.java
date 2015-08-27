@@ -300,7 +300,7 @@ public class JDBCUtilities {
             conn.setAutoCommit(false);
 
             String query = "INSERT INTO rest_user (name, family, image_id) " +
-                    "VALUE ('" + user.getName() + "', '" + user.getFamily() + "', "+ user.getIntImageURL() +");";
+                    "VALUE ('" + user.getName() + "', '" + user.getFamily() + "', "+ user.getImageURL() +");";
             log.info(query);
             System.out.println(query);
             stmt = conn.createStatement();

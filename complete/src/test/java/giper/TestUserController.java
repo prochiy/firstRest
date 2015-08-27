@@ -84,8 +84,8 @@ public class TestUserController {
 
     public static void main(String[] args){
 
-        getUser();
-        //addUser();
+        //getUser();
+        addUser();
         //updateStatus();
         //getStatistics();
 

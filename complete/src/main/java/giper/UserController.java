@@ -1,7 +1,10 @@
 package giper;
 
 import database.JDBCUtilities;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -18,14 +21,23 @@ import java.util.concurrent.Future;
 /**
  * Created by prochiy on 8/22/15.
  */
+
+
 @EnableAsync
-@Service
+//@Service
 @RestController
 public class UserController {
 
+    @Autowired
+    private UserRepository userRepository;
+
     @RequestMapping(value = "user", method = RequestMethod.POST)
     public Integer createUser(@RequestBody User user){
-        return JDBCUtilities.getJBDCUtilities().createUser(user);
+        System.out.println("userRepository = " + userRepository);
+        userRepository.save(user);
+
+        //return JDBCUtilities.getJBDCUtilities().createUser(user);
+        return user.getId();
     }
 
     //@Async(value = "restLowPriority")

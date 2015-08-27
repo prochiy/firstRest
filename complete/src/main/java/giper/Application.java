@@ -3,12 +3,28 @@ package giper;
 import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
+//@PropertySource("classpath:application.properties")
+@Configuration
+//@EnableJpaRepositories("com.spr.repository")
+//@EnableAutoConfiguration(exclude=org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class)
 @SpringBootApplication
 public class Application {
-    
+
+
+
+
+
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
         
