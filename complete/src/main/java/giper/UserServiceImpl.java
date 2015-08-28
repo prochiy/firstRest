@@ -1,13 +1,23 @@
 package giper;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by prochiy on 8/27/15.
  */
+@Configuration
 public class UserServiceImpl implements UserService{
+
+
 
     @Resource
     private UserRepository userRepository;
@@ -26,58 +36,70 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    //@Cacheable("List")
+    public List findByStatusOrCreatedAt(Boolean status, Date timestamp) {
+        simulateSlowService();
+        List<User> userList = userRepository.findByStatusOrCreatedAt(status, timestamp);
+        System.out.println("findByStatusAndTimestamp " + userList.size());
+        return userRepository.findByStatusOrCreatedAt(status, timestamp);
+    }
+
+    @Override
     @Transactional(rollbackFor=UserNotFound.class)
     public User delete(long id) throws UserNotFound {
         User deletedUser = userRepository.findOne(id);
 
         if (deletedUser == null)
             throw new UserNotFound();
-        38
 
-        39
-        shopRepository.delete(deletedShop);
-        40
-        return deletedShop;
-        41
+        userRepository.delete(deletedUser);
+        return deletedUser;
     }
-    42
 
-            43
     @Override
-    44
     @Transactional
-    45
     public List findAll() {
-        46
-        return shopRepository.findAll();
-        47
+        return userRepository.findAll();
     }
-    48
 
-            49
     @Override
-    50
-    @Transactional(rollbackFor=ShopNotFound.class)
-    51
-    public Shop update(Shop shop) throws ShopNotFound {
-        52
-        Shop updatedShop = shopRepository.findOne(shop.getId());
-        53
+    @Transactional(rollbackFor=UserNotFound.class)
+    public User update(User user) throws UserNotFound {
+        User updatedUser = userRepository.findOne(user.getId());
 
-        54
-        if (updatedShop == null)
-            55
-        throw new ShopNotFound();
-        56
+        if (updatedUser == null)
+            throw new UserNotFound();
 
-        57
-        updatedShop.setName(shop.getName());
-        58
-        updatedShop.setEmplNumber(shop.getEmplNumber());
-        59
-        return updatedShop;
-        60
+        updatedUser.setName(user.getName());
+        updatedUser.setFamily(user.getFamily());
+        return updatedUser;
     }
-    61
+
+    @Override
+    @Transactional(rollbackFor=UserNotFound.class)
+    public Map<String, Object> update(Long id, Boolean newStatus) throws UserNotFound {
+        User updatedUser = userRepository.findOne(id);
+
+        if (updatedUser == null)
+            throw new UserNotFound();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("oldStatus", updatedUser.getStatus());
+        map.put("newStatus", newStatus);
+
+        updatedUser.setStatus(newStatus);
+
+        return map;
+    }
+
+    private void simulateSlowService() {
+        try {
+            long time = (long) (5000L);
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
 }

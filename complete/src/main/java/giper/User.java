@@ -3,6 +3,7 @@ package giper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by prochiy on 8/21/15.
@@ -26,8 +27,11 @@ public class User implements Serializable {
     private String imageURL;
     @Column(nullable = true)
     private Integer age;
-    @Column(nullable = false, columnDefinition = "default '-1'")
-    private long timestamp;
+    @Basic(optional = false)
+    @Column(name = "created_at", insertable = false, updatable = false)
+    //@Column(name="createdAt", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
     @Override
     public String toString(){
@@ -86,11 +90,15 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Boolean getStatus() {
+        return status;
     }
 }

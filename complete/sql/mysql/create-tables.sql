@@ -7,7 +7,7 @@ CREATE TABLE rest_user
     status TINYINT(1) NOT NULL DEFAULT 0,
     email varchar(20),
     age INTEGER,
-    timestamp INTEGER NOT NULL DEFAULT -1,
+    created_at TIMESTAMP,
     PRIMARY KEY (id)
     );
 

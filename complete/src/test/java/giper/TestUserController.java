@@ -32,7 +32,7 @@ public class TestUserController {
         user.setStatus(false);
         user.setAge(31);
         //ResponseEntity<String> response = template.getForEntity(base.toString(), String.class, user);
-        ResponseEntity<Integer> response = template.postForEntity(base.toString(), user, Integer.class);
+        ResponseEntity<Long> response = template.postForEntity(base.toString(), user, Long.class);
         System.out.println(response.getBody());
     }
 
@@ -70,7 +70,7 @@ public class TestUserController {
         TestRestTemplate template = new TestRestTemplate();
         URL base = null;
         try {
-            base = new URL("http://localhost:" + 8080 + "/user/statistics?status=false&timestamp=1234495");
+            base = new URL("http://localhost:" + 8080 + "/user/statistics?status=true&timestamp=2015/08/28/15:57:54");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -78,16 +78,18 @@ public class TestUserController {
 
         ResponseEntity<List> response = template.getForEntity(base.toString(), List.class);
         //ResponseEntity<Integer> response = template.postForEntity(base.toString(), user, Integer.class);
-
+        for(Object object: response.getBody()){
+            System.out.println(object);
+        }
         System.out.println(response.getBody());
     }
 
     public static void main(String[] args){
 
         //getUser();
-        addUser();
+        //addUser();
         //updateStatus();
-        //getStatistics();
+        getStatistics();
 
     }
 }
