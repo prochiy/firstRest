@@ -9,10 +9,10 @@ import java.util.Map;
  */
 public interface UserService {
     public User create(User user);
-    public User delete(long id) throws UserNotFound;
+    public User delete(long id) throws UserNotFoundException;
     public List findAll();
-    public User update(User user) throws UserNotFound;
-    public Map<String, Object> update(Long id, Boolean newStatus) throws UserNotFound;
-    public User findById(long id);
+    public User update(User user) throws UserNotFoundException;
+    public Map<String, Object> update(Long id, Boolean newStatus) throws UserNotFoundException;
+    public User findById(long id) throws UserNotFoundException;
     public List<User> findByStatusOrCreatedAt(Boolean status, Date timestamp);
 }

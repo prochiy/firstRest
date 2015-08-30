@@ -5,7 +5,9 @@ import java.util.Arrays;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -17,7 +19,7 @@ import javax.sql.DataSource;
 
 //@PropertySource("classpath:application.properties")
 @Configuration
-//@EnableCaching
+@EnableCaching
 //@EnableJpaRepositories("com.spr.repository")
 //@EnableAutoConfiguration(exclude=org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class)
 @SpringBootApplication
@@ -38,6 +40,11 @@ public class Application {
         dataSource.setPassword(env.getRequiredProperty("spring.datasource.password"));
 
         return dataSource;
+    }
+
+    @Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("user");
     }
 
 

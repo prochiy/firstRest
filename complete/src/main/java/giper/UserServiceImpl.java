@@ -1,7 +1,6 @@
 package giper;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,26 +30,29 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public User findById(long id) {
-        return userRepository.findOne((long) id);
+    public User findById(long id) throws UserNotFoundException {
+        User user = userRepository.findOne((long) id);
+        if (user == null)
+            throw new UserNotFoundException();
+        return user;
     }
 
     @Override
-    //@Cacheable("List")
+    @Cacheable("user")
     public List findByStatusOrCreatedAt(Boolean status, Date timestamp) {
         simulateSlowService();
         List<User> userList = userRepository.findByStatusOrCreatedAt(status, timestamp);
-        System.out.println("findByStatusAndTimestamp " + userList.size());
+        System.out.println("findByStatusOrTimestamp " + userList.size());
         return userRepository.findByStatusOrCreatedAt(status, timestamp);
     }
 
     @Override
-    @Transactional(rollbackFor=UserNotFound.class)
-    public User delete(long id) throws UserNotFound {
+    @Transactional(rollbackFor= UserNotFoundException.class)
+    public User delete(long id) throws UserNotFoundException {
         User deletedUser = userRepository.findOne(id);
 
         if (deletedUser == null)
-            throw new UserNotFound();
+            throw new UserNotFoundException();
 
         userRepository.delete(deletedUser);
         return deletedUser;
@@ -63,12 +65,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    @Transactional(rollbackFor=UserNotFound.class)
-    public User update(User user) throws UserNotFound {
+    @Transactional(rollbackFor= UserNotFoundException.class)
+    public User update(User user) throws UserNotFoundException {
         User updatedUser = userRepository.findOne(user.getId());
 
         if (updatedUser == null)
-            throw new UserNotFound();
+            throw new UserNotFoundException();
 
         updatedUser.setName(user.getName());
         updatedUser.setFamily(user.getFamily());
@@ -76,12 +78,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    @Transactional(rollbackFor=UserNotFound.class)
-    public Map<String, Object> update(Long id, Boolean newStatus) throws UserNotFound {
+    @Transactional(rollbackFor= UserNotFoundException.class)
+    public Map<String, Object> update(Long id, Boolean newStatus) throws UserNotFoundException {
         User updatedUser = userRepository.findOne(id);
 
         if (updatedUser == null)
-            throw new UserNotFound();
+            throw new UserNotFoundException();
 
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
