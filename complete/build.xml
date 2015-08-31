@@ -7,61 +7,15 @@
   <property file="build.properties"/>
 
     <path id="myclasspath">
-        <fileset dir="${lib.dir}">
-            <include name="**/*.jar"/>
-        </fileset>
-        <fileset dir="${giper.path}">
+        <fileset dir="/lib">
             <include name="**/*.jar"/>
         </fileset>
     </path>
-
-  <path id="compile.classpath">
-      <fileset dir="${lib.dir}" includes="**/*.jar"/>
-  </path>
-
-
-  <target name="make.dirs">
-
-      <mkdir dir="${build.dir}"/>
-      <mkdir dir="${class.dir}"/>
-  </target>
-
-  <target name="compile" depends="make.dirs">
-      <javac destdir="${class.dir}" classpathref="myclasspath">
-          <src path="src"/>
-      </javac>
-  </target>
-
-    <target name="balance.jar" depends="compile">
-        <echo message="Start creating file ${balance.jar}"/>
-        <manifestclasspath property="jar.classpath" jarfile="${balance.jar}">
-            <classpath refid="compile.classpath"/>
-        </manifestclasspath><jar destfile="${balance.jar}">
-        <fileset dir="${class.dir}">
-            <include name="**/*.class"/>
-        </fileset>
-        <fileset dir="src">
-            <include name="**/*.png"/>
-            <include name="**/*.xml"/>
-        </fileset>
-        <manifest>
-            <attribute name="Built-By" value="${user.name}"/>
-            <attribute name="Class-Path" value="${jar.classpath}"/>
-            <attribute name="Main-Class" value="ru/aviacons/balance/gui/Main"/>
-        </manifest>
-    </jar>
-    </target>
-
-    <target name="all" depends="balance.jar">
-        <echo message="Start building project ..."/>
-        <echo message="Biuld project complete ..."/>
-    </target>
 
     <target name="clean">
         <echo message="Clean all build dirs"/>
         <delete dir="${build.dir}"/>
     </target>
-
 
     <target name="setup">
         <antcall target="drop-tables"/>

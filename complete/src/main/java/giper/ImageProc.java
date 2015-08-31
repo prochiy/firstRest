@@ -11,8 +11,8 @@ public class ImageProc {
             System.getProperty("file.separator");
     static final public String serverPath = path + "/ServerImages/";
 
-    public static byte[] read(String name){
-        String fileName = path + "Firefox_wallpaper.jpg";
+    public static byte[] read(String fileName) throws IOException {
+        //String fileName = path + "Firefox_wallpaper.jpg";
         byte[] image = null;
         File file = new File(fileName);
         image = new byte[(int)file.length()];
@@ -22,17 +22,15 @@ public class ImageProc {
 
             dis.readFully(image, 0, (int) file.length());
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return image;
     }
 
     public static String write(byte[] image) throws IOException {
 
-        File file = File.createTempFile("imag", ".jpg", new File(path + serverPath));
+        File file = null;
+
+        file = File.createTempFile("imag", ".jpg", new File(path + serverPath));
 
         //File file = new File(fileName);
         try(FileOutputStream fos = new FileOutputStream(file);
@@ -41,19 +39,8 @@ public class ImageProc {
 
             dos.write(image, 0, image.length);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return file.getName();
     }
-
-    public static void main(String[] args){
-        ImageProc imageProc = new ImageProc();
-        imageProc.read("");
-        //imageProc.write("");
-    }
-
 
 }

@@ -70,7 +70,7 @@ public class TestUserController {
         TestRestTemplate template = new TestRestTemplate();
         URL base = null;
         try {
-            base = new URL("http://localhost:" + 8090 + "/user/statistics?status=false");
+            base = new URL("http://localhost:" + 8080 + "/user/statistics?status=false");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -81,7 +81,7 @@ public class TestUserController {
         for(Object object: response.getBody()){
             System.out.println(object);
         }
-        System.out.println(response.getBody());
+
     }
 
     public static void main(String[] args){
