@@ -1,10 +1,9 @@
-package giper;
+package ru.prochiy.services;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import priority.PriorityExecutorService;
-import priority.PriorityExecutors;
-
+import ru.prochiy.priority.PriorityExecutorService;
+import ru.prochiy.priority.PriorityExecutors;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;

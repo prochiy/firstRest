@@ -1,4 +1,4 @@
-package priority;
+package ru.prochiy.priority;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;

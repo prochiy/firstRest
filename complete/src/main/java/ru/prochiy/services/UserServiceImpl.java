@@ -1,8 +1,12 @@
-package giper;
+package ru.prochiy.services;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.prochiy.main.User;
+import ru.prochiy.main.UserNotFoundException;
+import ru.prochiy.main.UserRepository;
+import ru.prochiy.services.UserService;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -13,8 +17,8 @@ import java.util.Map;
 /**
  * Created by prochiy on 8/27/15.
  */
-@Configuration
-public class UserServiceImpl implements UserService{
+@Service
+public class UserServiceImpl implements UserService {
 
 
 
@@ -31,7 +35,7 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public User findById(long id) throws UserNotFoundException {
-        User user = userRepository.findOne((long) id);
+        User user = userRepository.getOne((long) id);
         if (user == null)
             throw new UserNotFoundException();
         return user;
@@ -49,7 +53,7 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional(rollbackFor= UserNotFoundException.class)
     public User delete(long id) throws UserNotFoundException {
-        User deletedUser = userRepository.findOne(id);
+        User deletedUser = userRepository.getOne(id);
 
         if (deletedUser == null)
             throw new UserNotFoundException();
@@ -67,7 +71,7 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional(rollbackFor= UserNotFoundException.class)
     public User update(User user) throws UserNotFoundException {
-        User updatedUser = userRepository.findOne(user.getId());
+        User updatedUser = userRepository.getOne(user.getId());
 
         if (updatedUser == null)
             throw new UserNotFoundException();
@@ -80,7 +84,7 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional(rollbackFor= UserNotFoundException.class)
     public Map<String, Object> update(Long id, Boolean newStatus) throws UserNotFoundException {
-        User updatedUser = userRepository.findOne(id);
+        User updatedUser = userRepository.getOne(id);
 
         if (updatedUser == null)
             throw new UserNotFoundException();

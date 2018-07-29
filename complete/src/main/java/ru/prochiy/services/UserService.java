@@ -1,4 +1,7 @@
-package giper;
+package ru.prochiy.services;
+
+import ru.prochiy.main.User;
+import ru.prochiy.main.UserNotFoundException;
 
 import java.util.Date;
 import java.util.List;

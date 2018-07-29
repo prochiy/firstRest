@@ -1,11 +1,12 @@
-package giper;
+package ru.prochiy.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
+import ru.prochiy.main.*;
+import ru.prochiy.services.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
@@ -25,8 +26,6 @@ import java.util.logging.Logger;
  */
 
 
-@EnableAsync
-//@Service
 @RestController
 public class UserController {
 
@@ -69,7 +68,7 @@ public class UserController {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    @RequestMapping(value = "user", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     public long createUser(@RequestBody User user) throws ExecutionException, InterruptedException {
         log.info("/user RequestMethod.POST long createUser(@RequestBody User user)");
         Future<Long> longFuture = createUserMulty(user);
@@ -92,7 +91,7 @@ public class UserController {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable("id") long id) throws ExecutionException, InterruptedException, UserNotFoundException {
         log.info("/user/"+id+" RequestMethod.GET getUser(@PathVariable(\"id\") long id)");
         if(id <= 0)
@@ -120,7 +119,7 @@ public class UserController {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    @RequestMapping(value = "user/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public Map<String, Object> updateStatus(@PathVariable("id") long id, @RequestParam("status") boolean status) throws UserNotFoundException, ExecutionException, InterruptedException {
         log.info("/user/?id="+id+"&status="+status+" RequestMethod.PUT Map<String, Object> updateStatus(@PathVariable(\"id\") long id, @RequestParam(\"status\") boolean status)");
         if(id <= 0)
@@ -148,7 +147,7 @@ public class UserController {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    @RequestMapping(value = "user/statistics", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/statistics", method = RequestMethod.GET)
     public List<Map<String, Object>> getStatistics(@RequestParam(value = "status", required = false) Boolean status,
                                                    @RequestParam(value = "timestamp", required = false) Date timestamp) throws ExecutionException, InterruptedException {
         log.info("user/statistics?status="+status+"&Date="+timestamp+"RequestMethod.GET List<Map<String, Object>> getStatistics(@RequestParam(value = \"status\", required = false) Boolean status,\n" +

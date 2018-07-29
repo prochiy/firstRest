@@ -1,9 +1,11 @@
-package giper;
+package ru.prochiy.main;
 
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
+import static com.sun.javafx.fxml.expression.Expression.not;
 
 /**
  * Created by prochiy on 8/21/15.
@@ -21,15 +23,14 @@ public class User implements Serializable {
     private String name;
     @Column(nullable = true)
     private String family;
-    @Column(nullable = true, columnDefinition = "default '0")
+    @Column(nullable = true, columnDefinition = "boolean default true")
     private Boolean status;
     @Column(nullable = true)
     private String imageURL;
     @Column(nullable = true)
     private Integer age;
     @Basic(optional = false)
-    @Column(name = "created_at", insertable = false, updatable = false)
-    //@Column(name="createdAt", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
@@ -40,6 +41,30 @@ public class User implements Serializable {
                 "family = " + family + "\n" +
                 "status = " + status + "\n" +
                 "age = " + age;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        createdAt = new Date();
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof User)){
+            return false;
+        }
+        User u = (User)o;
+        return this.name.equals(u.name);
+    }
+
+    @Override
+    public int hashCode(){
+        return name.hashCode();
     }
 
     public long getId() {

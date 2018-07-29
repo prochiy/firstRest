@@ -1,4 +1,4 @@
-package priority;
+package ru.prochiy.priority;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;

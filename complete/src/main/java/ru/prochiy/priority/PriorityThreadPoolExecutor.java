@@ -1,4 +1,4 @@
-package priority;
+package ru.prochiy.priority;
 
 import java.util.Comparator;
 import java.util.concurrent.*;
@@ -61,7 +61,7 @@ public class PriorityThreadPoolExecutor extends ThreadPoolExecutor implements Pr
 
     public Future<?> submit(Runnable task, int priority)
     {
-        log.info("Future<?> submit(Runnable task, int priority)");
+        log.info("Future<?> submit(Runnable task, int ru.prochiy.priority)");
         if (task == null)
             throw new NullPointerException();
         RunnableFuture<Object> ftask = newPriorityTaskFor(task, null, priority);
@@ -71,7 +71,7 @@ public class PriorityThreadPoolExecutor extends ThreadPoolExecutor implements Pr
 
     public <T> Future<T> submit(Runnable task, T result, int priority)
     {
-        log.info("<T> Future<T> submit(Runnable task, T result, int priority)");
+        log.info("<T> Future<T> submit(Runnable task, T result, int ru.prochiy.priority)");
         if (task == null)
             throw new NullPointerException();
         RunnableFuture<T> ftask = newPriorityTaskFor(task, result, priority);
@@ -81,7 +81,7 @@ public class PriorityThreadPoolExecutor extends ThreadPoolExecutor implements Pr
 
     public <T> Future<T> submit(Callable<T> task, int priority)
     {
-        log.info("<T> Future<T> submit(Callable<T> task, int priority)");
+        log.info("<T> Future<T> submit(Callable<T> task, int ru.prochiy.priority)");
         if (task == null)
             throw new NullPointerException();
         RunnableFuture<T> ftask = newPriorityTaskFor(task, priority);
@@ -121,7 +121,7 @@ public class PriorityThreadPoolExecutor extends ThreadPoolExecutor implements Pr
     public void changePriorities(int fromPriority, int toPriority)
     {
         if (fromPriority < Thread.MIN_PRIORITY || fromPriority > Thread.MAX_PRIORITY || toPriority < Thread.MIN_PRIORITY || toPriority > Thread.MAX_PRIORITY || fromPriority == toPriority)
-            throw new IllegalArgumentException("Invalid from/to priority values");
+            throw new IllegalArgumentException("Invalid from/to ru.prochiy.priority values");
 
         PriorityFutureTask<?>[] tasks = this.workQueue.toArray(new PriorityFutureTask<?>[0]);
 

@@ -1,4 +1,4 @@
-package giper;
+package ru.prochiy.main;
 
 /**
  * Created by prochiy on 8/24/15.

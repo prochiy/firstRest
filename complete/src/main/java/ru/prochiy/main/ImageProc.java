@@ -1,4 +1,4 @@
-package giper;
+package ru.prochiy.main;
 
 import java.io.*;
 
